@@ -1,6 +1,6 @@
 exports.config = {
     user:"ritamg",
-    key: "acees_key",
+    key: "acess_key",
   
     updateJob: false,
     specs: ["./specs/**/android-test.ts"],
@@ -14,7 +14,7 @@ exports.config = {
         deviceName: "Pixel.*,Nexus.*,Galaxy.*",
         platformVersion: "12",
         platformName: "android",
-        app:"lt://APP10160631101688537717000234", //Set your APP URL
+        app:"ur_app", //Set your APP URL
       },
     ],
   
