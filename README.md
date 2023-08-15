@@ -1,4 +1,4 @@
-# WebDriverIO With Appium
+# WebDriverIO With Appium In TypeScript
 
 <p align="center">
 <img height="500" src="https://user-images.githubusercontent.com/95698164/171858859-b08009f7-101e-43a9-8e4e-293bd690ccd5.png">
@@ -43,11 +43,11 @@ Before you can start performing App automation testing with Appium, you would ne
 
 ### Clone The Sample Project
 
-Clone the LambdaTest’s :link: [LT-appium-nodejs-webdriverio](https://github.com/LambdaTest/LT-appium-nodejs-webdriverio) repository and navigate to the code directory as shown below:
+Clone the LambdaTest’s :link: [LT-appium-nodejs-webdriverio](https://github.com/ritamganguli/LT_Webdriver.io_Typescript_Appium) repository and navigate to the code directory as shown below:
 
 ```bash
-git clone https://github.com/LambdaTest/LT-appium-nodejs-webdriverio
-cd LT-appium-nodejs-webdriverio
+git clone https://github.com/ritamganguli/LT_Webdriver.io_Typescript_Appium
+cd wdio typescript appium
 ```
 
 ### Setting Up Your Authentication
@@ -95,7 +95,7 @@ curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" -X POST "https://m
 
 **For Linux/macOS:**
 
-```js
+```ts
 curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" \
 --location --request POST 'https://manual-api.lambdatest.com/app/upload/realDevice' \
 --form 'name="Android_App"' \
@@ -104,7 +104,7 @@ curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" \
 
 **For Windows:**
 
-```js
+```ts
 curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" -X POST "https://manual-api.lambdatest.com/app/upload/realDevice" -d "{"url":"https://prod-mobile-artefacts.lambdatest.com/assets/docs/proverbial_android.apk","name":"sample.apk"}"
 ```
 
@@ -117,17 +117,14 @@ curl -u "YOUR_LAMBDATEST_USERNAME:YOUR_LAMBDATEST_ACCESS_KEY" -X POST "https://m
 
 Once you are done with the above-mentioned steps, you can initiate your first WebDriverIO test on LambdaTest.
 
-**Test Scenario:** Check out [Android-test.js](https://github.com/LambdaTest/LT-appium-nodejs-webdriverio/blob/master/specs/android-test.js) file to view the sample test script for android and [iOS-test.js](https://github.com/LambdaTest/LT-appium-nodejs-webdriverio/blob/master/specs/ios-test.js) for iOS.
+**Test Scenario:** Check out [Android-test.js](https://github.com/ritamganguli/LT_Webdriver.io_Typescript_Appium) file to view the sample test script for android and IOS
 
 ### Configuring Your Test Capabilities
 
-You need to update your capabilities in `*.config.js` files. In this sample project, we have provided the examples for running tests on both **Android** and **iOS** apps. You can find the configs for both iOS and Android in the `iOS-sample` and `android-sample` directories correspondingly. We are passing platform name, platform version, device name and app url (generated earlier) along with other capabilities like build name and test name via capabilities object. You need to pass the path of your test script in `specs` object to run your own automation script. The capabilities object in the sample code for a single test are defined as:
+You need to update your capabilities in `wdioLT.conf.ts` file. In this sample project, we have provided the examples for running tests on both **Android** and **iOS** apps. Also the test files can be found under `specs`  by the name `android-test.ts`
 
-<Tabs className="docs__val">
 
-<TabItem value="ios-config" label="ios-single.conf.js" default>
-
-```javascript title="ios/ios-single.conf.js"
+```
 exports.config = {
   user: process.env.LT_USERNAME || "YOUR_USERNAME",
   key: process.env.LT_ACCESS_KEY || "YOUR_ACCESS_KEY",
@@ -174,47 +171,49 @@ exports.config = {
 <TabItem value="android-config" label="android-single.conf.js" default>
 
 ```javascript title="android/android-single.conf.js"
+
+
 exports.config = {
-  user: process.env.LT_USERNAME || "YOUR_USERNAME",
-  key: process.env.LT_ACCESS_KEY || "YOUR_ACCESS_KEY",
+    user:"ritamg",
+    key: "acees_key",
+  
+    updateJob: false,
+    specs: ["./specs/**/android-test.ts"],
+    exclude: [],
+  
+    capabilities: [
+      {
+        build: "NodeJS WebDriverIO iOS",
+        name: "Sample Test - WebDriverIO",
+        isRealMobile: true,
+        deviceName: "Pixel.*,Nexus.*,Galaxy.*",
+        platformVersion: "12",
+        platformName: "android",
+        app:"lt://APP10160631101688537717000234", //Set your APP URL
+      },
+    ],
+  
+    logLevel: "info",
+    coloredLogs: true,
+    screenshotPath: "./errorShots/",
+    baseUrl: "",
+    waitforTimeout: 10000,
+    connectionRetryTimeout: 90000,
+    connectionRetryCount: 3,
+    path: "/wd/hub",
+    hostname: "mobile-hub.lambdatest.com",
+    port: 80,  
+    framework: "mocha",
 
-  updateJob: false,
-  //highlight-next-line
-  specs: ["specs/android-test.js"], //path of your test script
-  exclude: [],
-
-  //highlight-start
-  capabilities: [
-    {
-      build: "NodeJS WebDriverIO Android",
-      name: "Sample Test - WebDriverIO",
-      isRealMobile: true,
-      platformName: "Android",
-      deviceName: "Galaxy S9",
-      platformVersion: "10",
-      app: "YOUR_APP_URL",
+    
+    
+    mochaOpts: {
+      ui: "bdd",
+      timeout: 20000,
     },
-  ],
-  //highlight-end
-
-  logLevel: "info",
-  coloredLogs: true,
-  screenshotPath: "./errorShots/",
-  baseUrl: "",
-  waitforTimeout: 10000,
-  connectionRetryTimeout: 90000,
-  connectionRetryCount: 3,
-  path: "/wd/hub",
-  hostname: "mobile-hub.lambdatest.com",
-  port: 80,
-
-  framework: "mocha",
-  mochaOpts: {
-    ui: "bdd",
-    timeout: 20000,
-  },
-};
+  };
 ```
+
 
 </TabItem>
 
@@ -240,28 +239,18 @@ npm i
 - *MacOS/Linux* 
 
 ```bash
-npm run singleAndroid
+npm i
+npm run test
 ```
 
 - *Windows*
 
 ```bash
-npm run singleAndroidWindows
+npm i
+npm run test
 ```
 
-**Parallel:**
 
-- *MacOS/Linux* 
-
-```bash
-npm run parallelIOS
-```
-
-- *Windows*
-
-```bash
-npm run parallelIOSWindows
-```
 
 **Info:** Your test results would be displayed on the test console (or command-line interface if you are using terminal/cmd) and on the :link: [LambdaTest App Automation Dashboard](https://appautomation.lambdatest.com/build/?utm_source=github&utm_medium=repo&utm_campaign=LT-appium-nodejs-webdriverio).
 
